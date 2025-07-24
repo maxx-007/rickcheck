@@ -1,0 +1,328 @@
+# RickCheck Installation Guide
+
+This guide will help you set up the RickCheck React Native app in your constrained Linux environment.
+
+## Prerequisites
+
+### System Requirements
+- **Linux Distribution**: Ubuntu 18.04+ / CentOS 7+ / Any modern Linux
+- **Node.js**: Version 16.x or higher
+- **npm or yarn**: Package manager
+- **Memory**: At least 4GB RAM
+- **Storage**: 2GB free space
+
+### Required Tools
+```bash
+# Install Node.js (if not already installed)
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Verify installation
+node --version  # Should be 16.x or higher
+npm --version   # Should be 8.x or higher
+```
+
+## Step-by-Step Installation
+
+### 1. Install Expo CLI
+```bash
+# Install Expo CLI globally
+npm install -g @expo/cli
+
+# Verify installation
+expo --version
+```
+
+### 2. Create Project Directory
+```bash
+# Create and navigate to project directory
+mkdir rickcheck
+cd rickcheck
+```
+
+### 3. Initialize Expo Project
+```bash
+# Initialize new Expo project
+expo init . --template blank
+
+# Answer prompts:
+# - Project name: RickCheck
+# - Template: blank (TypeScript)
+```
+
+### 4. Install Dependencies
+```bash
+# Install core dependencies
+npm install @react-navigation/native @react-navigation/stack
+
+# Install Expo-specific packages
+expo install expo-location expo-sensors
+
+# Install React Navigation dependencies
+expo install react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated
+
+# Optional: Install maps (if needed)
+expo install react-native-maps
+```
+
+### 5. Project Structure Setup
+```bash
+# Create directory structure
+mkdir -p src/screens
+mkdir -p src/components  
+mkdir -p src/services
+mkdir -p src/utils
+
+# Create placeholder files
+touch src/screens/RideScreen.js
+touch src/screens/SummaryScreen.js
+touch src/screens/SettingsScreen.js
+touch src/components/FareMeter.js
+touch src/components/TripStats.js
+touch src/components/SensorIndicator.js
+touch src/components/FareComparisonChart.js
+touch src/components/TripMap.js
+touch src/services/LocationService.js
+touch src/services/SensorService.js
+touch src/utils/FareCalculator.js
+```
+
+### 6. Copy Source Code
+Copy each of the provided code files into their respective locations:
+
+1. **App.js** → Root directory
+2. **src/utils/FareCalculator.js** → Fare calculation logic
+3. **src/services/LocationService.js** → GPS tracking
+4. **src/services/SensorService.js** → Motion sensors
+5. **src/screens/RideScreen.js** → Main ride screen
+6. **src/screens/SummaryScreen.js** → Trip summary
+7. **src/screens/SettingsScreen.js** → App settings
+8. **src/components/*.js** → All component files
+
+### 7. Update package.json
+Replace the default package.json with the provided one, or manually add the dependencies:
+
+```json
+{
+  "dependencies": {
+    "expo": "~49.0.15",
+    "expo-location": "~16.1.0",
+    "expo-sensors": "~12.4.0",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/stack": "^6.3.20",
+    "react-native-screens": "~3.24.0",
+    "react-native-safe-area-context": "4.6.3",
+    "react-native-gesture-handler": "~2.12.0",
+    "react-native-reanimated": "~3.3.0"
+  }
+}
+```
+
+### 8. Configure App Settings
+Update **app.json** with the provided configuration to enable location and sensor permissions.
+
+## Running the App
+
+### Development Mode
+```bash
+# Start Expo development server
+expo start
+
+# Alternative: Start with specific platform
+expo start --android  # For Android emulator
+expo start --ios      # For iOS simulator (macOS only)
+expo start --web      # For web browser
+```
+
+### Testing on Physical Device
+1. Install **Expo Go** app on your Android/iOS device
+2. Scan QR code from terminal/browser
+3. Grant location and sensor permissions when prompted
+
+### Building for Production
+```bash
+# Build Android APK
+expo build:android
+
+# Build iOS IPA (requires Apple Developer account)
+expo build:ios
+```
+
+## Linux-Specific Setup
+
+### Android Development (Optional)
+```bash
+# Install Android Studio dependencies
+sudo apt-get install openjdk-11-jdk
+
+# Download Android Studio
+wget https://dl.google.com/dl/android/studio/ide-zips/2022.3.1.21/android-studio-2022.3.1.21-linux.tar.gz
+
+# Extract and setup
+tar -xzf android-studio-*.tar.gz
+cd android-studio/bin
+./studio.sh
+```
+
+### USB Debugging (Physical Device)
+```bash
+# Enable developer options on Android device
+# Enable USB debugging
+# Connect device via USB
+
+# Check device connection
+adb devices
+
+# Install app directly
+expo install --android
+```
+
+### Environment Variables
+```bash
+# Add to ~/.bashrc or ~/.zshrc
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+# Reload shell
+source ~/.bashrc
+```
+
+## Troubleshooting
+
+### Common Linux Issues
+
+**Permission Errors**
+```bash
+# Fix npm permissions
+sudo chown -R $(whoami) ~/.npm
+sudo chown -R $(whoami) /usr/local/lib/node_modules
+```
+
+**Port Already in Use**
+```bash
+# Kill process on port 19000 (Expo default)
+sudo lsof -ti:19000 | xargs kill -9
+
+# Or use different port
+expo start --port 19001
+```
+
+**Metro Bundler Issues**
+```bash
+# Clear Metro cache
+expo start --clear
+
+# Reset npm cache
+npm start -- --reset-cache
+```
+
+**Sensor Permissions (Android)**
+```bash
+# Add to android/app/src/main/AndroidManifest.xml
+<uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+```
+
+### Location Services
+```bash
+# Test GPS functionality
+# Ensure device has GPS enabled
+# Test in open area first
+# Check network connectivity for assisted GPS
+```
+
+### Performance Optimization
+```bash
+# Enable Hermes (Android)
+# Add to app.json:
+{
+  "expo": {
+    "android": {
+      "enableHermes": true
+    }
+  }
+}
+```
+
+## Verification Steps
+
+### 1. App Starts Successfully
+- [ ] App loads without errors
+- [ ] Navigation works between screens
+- [ ] All components render properly
+
+### 2. Location Services
+- [ ] Permission request appears
+- [ ] GPS coordinates are acquired
+- [ ] Location updates in real-time
+- [ ] Accuracy is within 20 meters
+
+### 3. Motion Sensors
+- [ ] Accelerometer data updates
+- [ ] Gyroscope data updates  
+- [ ] Stationary detection works
+- [ ] Movement classification accurate
+
+### 4. Fare Calculation
+- [ ] Minimum fare displays (₹26)
+- [ ] Per-km calculation accurate
+- [ ] Night rates apply correctly
+- [ ] Waiting charges calculated
+- [ ] Tampering detection functional
+
+### 5. User Interface
+- [ ] Meter animation smooth
+- [ ] Real-time updates working
+- [ ] Trip summary displays
+- [ ] Settings save properly
+
+## Production Deployment
+
+### Building APK
+```bash
+# Configure signing (optional)
+expo configure
+
+# Build production APK
+eas build --platform android --profile production
+
+# Download APK
+eas build:download --platform android
+```
+
+### App Store Submission
+```bash
+# Build for app stores
+eas build --platform all
+
+# Submit to stores
+eas submit --platform android
+eas submit --platform ios  # Requires Apple Developer account
+```
+
+## Support
+
+If you encounter issues during installation:
+
+1. Check the troubleshooting section above
+2. Verify all prerequisites are installed
+3. Ensure permissions are granted
+4. Test on a physical device if emulator fails
+5. Open an issue on GitHub with:
+   - Linux distribution and version
+   - Node.js and Expo versions
+   - Error messages and logs
+   - Steps that led to the issue
+
+## Next Steps
+
+After successful installation:
+1. Test core functionality with a short trip
+2. Verify GPS accuracy in your area
+3. Calibrate sensors if needed
+4. Customize settings for your preferences
+5. Report any bugs or suggestions for improvement
+
+Happy coding! 🚗💨
