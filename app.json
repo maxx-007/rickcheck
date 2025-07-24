@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "name": "RickCheck",
+    "slug": "rickcheck",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2196F3"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.yourcompany.rickcheck",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "RickCheck needs location access to calculate accurate auto-rickshaw fares based on distance traveled.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "RickCheck needs location access to track your trip and calculate fair fares.",
+        "NSMotionUsageDescription": "RickCheck uses motion sensors to detect when the vehicle is stationary for waiting time calculations."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#2196F3"
+      },
+      "package": "com.yourcompany.rickcheck",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "HIGH_SAMPLING_RATE_SENSORS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow RickCheck to use your location to calculate accurate auto-rickshaw fares.",
+          "locationAlwaysPermission": "Allow RickCheck to use your location to track trips and calculate fair fares.",
+          "locationWhenInUsePermission": "Allow RickCheck to use your location when the app is open to calculate fares.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ],
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Allow RickCheck to access motion sensors for accurate halt detection and fare calculation."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id-here"
+      }
+    }
+  }
+}
